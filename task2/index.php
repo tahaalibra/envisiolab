@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>Interleaving String Check</title>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -34,10 +34,10 @@
     <div class="col-md-4"></div>
     <div class="col-md-4">
 
-        <div class="alert alert-success" role="alert">...</div>
-        <div class="alert alert-danger" role="alert">...</div>
+        <div id="alert">
+        </div>
 
-        <form>
+
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon">A</span>
@@ -47,17 +47,16 @@
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon">B</span>
-                    <input type="text" class="form-control" id="a" placeholder="Enter Value of B">
+                    <input type="text" class="form-control" id="b" placeholder="Enter Value of B">
                 </div>
             </div>
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon">C</span>
-                    <input type="text" class="form-control" id="C" placeholder="Enter Value of C">
+                    <input type="text" class="form-control" id="c" placeholder="Enter Value of C">
                 </div>
             </div>
-            <button type="submit" class="btn btn-default btn-block">Check Result</button>
-        </form>
+            <button type="submit" class="btn btn-default btn-block" id="result">Check Result</button>
 
     </div>
     <div class="col-md-4"></div>
@@ -69,6 +68,84 @@
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 <script>
+
+    $(document).ready(function(){
+
+        $("#result").click(function(){
+            if($("#a").val()=="" || $("#c").val()=="" || $("#b").val()==""){
+                $("#alert").html('<div class="alert alert-danger" role="alert"> Empty Input</div>');
+            }else{
+
+                if(checkresult()){
+                    $("#alert").html('<div class="alert alert-success" role="alert"> C is an interleaving of A and B </div>');
+                }
+                else{
+                    $("#alert").html('<div class="alert alert-danger" role="alert"> C is not an interleaving of A and B</div>');
+                }
+
+            }
+        });
+
+        checkresult = function(){
+            var A = $("#a").val();
+            var B = $("#b").val();
+            var C = $("#c").val();
+            //var res = [];
+
+            var res = new Array($("#a").val().length+1);
+            for (var i = 0; i <= $("#a").val().length+1; i++) {
+                res[i] = new Array($("#b").val().length);
+            }
+
+
+            for (var i=0; i<=$("#a").val().length; ++i) {
+                for (var j = 0; j <= $("#b").val().length; ++j) {
+                    res[i][j] = 0;
+                }
+            }
+
+
+            console.log()
+            if ( ($("#a").val().length + $("#b").val().length) != $("#c").val().length){
+                return false;
+            }
+            for (var i=0; i<=$("#a").val().length; ++i)
+            {
+                for (var j=0; j<=$("#b").val().length; ++j)
+                {
+                    // two empty strings have an empty string
+                    // as interleaving
+                    if (i==0 && j==0)
+                        res[i][j] = true;
+
+                    // A is empty
+                    else if (i==0 && B[j-1]==C[j-1])
+                        res[i][j] = res[i][j-1];
+
+                    // B is empty
+                    else if (j==0 && A[i-1]==C[i-1])
+                        res[i][j] = res[i-1][j];
+
+                    // Current character of C matches with current character of A,
+                    // but doesn't match with current character of B
+                    else if(A[i-1]==C[i+j-1] && B[j-1]!=C[i+j-1])
+                        res[i][j] = res[i-1][j];
+
+                    // Current character of C matches with current character of B,
+                    // but doesn't match with current character of A
+                    else if (A[i-1]!=C[i+j-1] && B[j-1]==C[i+j-1])
+                        res[i][j] = res[i][j-1];
+
+                    // Current character of C matches with that of both A and B
+                    else if (A[i-1]==C[i+j-1] && B[j-1]==C[i+j-1])
+                        res[i][j]=(res[i-1][j] || res[i][j-1]) ;
+                }
+            }
+
+            return res[$("#a").val().length][$("#b").val().length];
+        };
+
+    });
 
 </script>
 </body>
