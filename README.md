@@ -16,3 +16,5 @@ javascript
 html
 css
 
+#task 3
+task 3 almost complete, it does work, only connectivity with database is remaining
