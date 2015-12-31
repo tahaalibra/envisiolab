@@ -61,8 +61,8 @@
                         <button type="button" class="list-group-item" id="steel">Steel<span class="pull-right"> 10$ </span></button>
                         <button type="button" class="list-group-item" id="copper">Copper<span class="pull-right"> 7$ </span></button>
                     </div>
-                    Quantity (between 1 and 5):
-                    <input type="number" name="quantity" min="1" max="5">
+<!--                    Quantity (between 1 and 5):-->
+<!--                    <input type="number" name="quantity" min="1" max="5">-->
                     <button type="button" class="btn btn-default" id="showShape">Previous</button>
                     <button type="button" class="btn btn-success" id="showCoating">Next</button>
                 </div>
